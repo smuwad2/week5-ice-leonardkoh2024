@@ -20,13 +20,134 @@
             
         </div>
         <div id="result">
-
+        <!--         
+            <table>
+                <tbody>
+                <tr>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td></td><td></td>
+                </tr>
+                </tbody>
+            </table>
+        -->
         </div>
         <script>
-            function getData() {
- 
-            }
+            async function getData(){
+                try {
+                    var selectedType = document.getElementById("type").value;
+                    var selectedLimit = document.getElementById("limit").value;
+                    const response = await axios.get('/data',{params:{
+                        type: selectedType,
+                        limit: selectedLimit
+                    }});
+                    const data = response.data
 
+                    if(document.getElementById("table")){
+                    // console.log("exist");
+                    document.getElementById("table").remove();
+                    document.getElementById("tableTitle").remove();
+                }
+                    var divTable = document.getElementById("result");
+                    tableTitle = document.createElement("h2");
+                    tableTitle.id="tableTitle";
+                    tableTitle.innerText=data.type;
+                    divTable.appendChild(tableTitle);
+                    var newTable = document.createElement("table");
+                    newTable.className="table";
+                    newTable.id="table";
+
+                    var newTBody = document.createElement("tbody");
+                    newTable.append(newTBody);
+                    divTable.appendChild(newTable);
+
+
+                    // console.log(data);
+
+                    for(obj of Object.values(data.records)){
+                        // console.log(Object.values(obj))
+                        let FirstRow = document.createElement("tr");
+                        if(!document.getElementById("head")){
+                        for(key of Object.keys(obj)){
+                            let firstTitle = document.createElement("th");
+                            firstTitle.innerText = key;
+                            FirstRow.appendChild(firstTitle);
+                        }
+                        newTBody.appendChild(FirstRow);
+                        }
+                        FirstRow.id="head";
+
+                        let newRow = document.createElement("tr");
+                        for(value of Object.values(obj)){
+                            let newValue = document.createElement("td");
+                            newValue.innerText=value;
+                            newRow.appendChild(newValue);
+                        }
+                        newTBody.appendChild(newRow);
+                    }
+
+
+
+
+
+
+
+                    // if(selectedType == "products"){
+                    //     let newRow = document.createElement("tr");
+                    //     let newTitle1 = document.createElement("th");
+                    //     newTitle1.innerText = "name";
+                    //     newRow.appendChild(newTitle1);
+                    //     let newTitle2 = document.createElement("th");
+                    //     newTitle2.innerText = "price";
+                    //     newRow.appendChild(newTitle2);
+                    //     newTBody.appendChild(newRow);
+                    // }else{
+                    //     let newRow = document.createElement("tr");
+                    //     let newTitle1 = document.createElement("th");
+                    //     newTitle1.innerText = "name";
+                    //     newRow.appendChild(newTitle1);
+                    //     let newTitle2 = document.createElement("th");
+                    //     newTitle2.innerText = "age";
+                    //     newRow.appendChild(newTitle2);
+                    //     let newTitle3 = document.createElement("th");
+                    //     newTitle3.innerText = "city";
+                    //     newRow.appendChild(newTitle3);
+                    //     newTBody.appendChild(newRow);
+                    // }
+
+                    // for(record of data.records){
+                    //     if(selectedType == "products"){
+                    //     let newRow = document.createElement("tr");
+                    //     let newRecordName = document.createElement("td");
+                    //     newRecordName.innerText=record.name;
+                    //     let newRecordPrice = document.createElement("td");
+                    //     newRecordPrice.innerText=record.price;
+                    //     newRow.appendChild(newRecordName);
+                    //     newRow.appendChild(newRecordPrice);
+
+
+                    //     newTBody.appendChild(newRow);
+                    //     }else{
+                    //     let newRow = document.createElement("tr");
+                    //     let newRecordName = document.createElement("td");
+                    //     newRecordName.innerText=record.name;
+                    //     let newRecordAge = document.createElement("td");
+                    //     newRecordAge.innerText=record.age;
+                    //     let newRecordCity = document.createElement("td");
+                    //     newRecordCity.innerText=record.city;
+                    //     newRow.appendChild(newRecordName);
+                    //     newRow.appendChild(newRecordAge);
+                    //     newRow.appendChild(newRecordCity);
+
+
+                    //     newTBody.appendChild(newRow);
+                    //     }}
+
+                } catch (err) {
+                    console.error(err)
+                }
+            }
         </script>
 </body>
 </html>
